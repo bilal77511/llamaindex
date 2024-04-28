@@ -1,7 +1,8 @@
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
+from os import environ
 
-uri = "mongodb+srv://admin:<password>@ai-powerhouse-mongol-cl.o7ylw6a.mongodb.net/?retryWrites=true&w=majority&appName=ai-powerhouse-mongol-cluster"
+uri = environ.get("MONGO_URI")
 
 # Create a new client and connect to the server
 client = MongoClient(uri, server_api=ServerApi('1'))
