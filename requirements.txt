@@ -1,0 +1,3 @@
+llama-index
+dnspython-2.6.1 
+pymongo-4.7.0
