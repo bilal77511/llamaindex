@@ -1,2 +1,7 @@
-llama-index
 pymongo[srv]
+llama-index
+llama-index-vector-stores-mongodb
+llama-index-embeddings-openai
+llama-index-readers-mongodb
+datasets
+pandas
