@@ -14,6 +14,7 @@ from llama_index.core import VectorStoreIndex, StorageContext
 from llama_index.core.response.notebook_utils import display_response
 import pymongo
 
+
 OPENAI_API_KEY = environ.get("OPENAI_API_KEY")
 MONGO_URI = environ.get("MONGO_URI")
 
@@ -40,34 +41,21 @@ def get_mongo_client(mongo_uri):
 
 mongo_client = get_mongo_client(MONGO_URI)
 
-DB_NAME = "itdata"
-COLLECTION_NAME = "it_support_data"
+DB_NAME = "movies"
+COLLECTION_NAME = "movies_records"
 
 db = mongo_client[DB_NAME]
 collection = db[COLLECTION_NAME]
 
 
-def generate_embedding(text):
-    return embed_model.get_text_embedding(text)
+vector_store = MongoDBAtlasVectorSearch(mongo_client, db_name=DB_NAME, collection_name=COLLECTION_NAME, index_name="vector_index")
+storage_context = StorageContext.from_defaults(vector_store=vector_store)
+index = VectorStoreIndex.from_documents([], storage_context=storage_context)
 
+query_engine = index.as_query_engine(similarity_top_k=3)
 
-query = "What is blackboard learn?"
+query = "Recommend a romantic movie suitable for the christmas season and justify your selecton"
 
-results = collection.aggregate(
-    [
-        {
-            "$vectorSearch": {
-                "queryVector": generate_embedding(query),
-                "path": "embedding",
-                "numCandidates": 100,
-                "limit": 3,
-                "index": "vector_index",
-            }
-        }
-    ]
-)
-
-for document in results:
-    print(document)
-    print(document["text"])
-    print("\n")
+response = query_engine.query(query)
+print(response)
+# pprint.pprint(response.source_nodes)

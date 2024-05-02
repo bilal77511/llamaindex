@@ -40,87 +40,87 @@ COLLECTION_NAME = "movies_records"
 db = mongo_client[DB_NAME]
 collection = db[COLLECTION_NAME]
 
-# collection.delete_many({})
+collection.delete_many({})
 
-# # https://huggingface.co/datasets/MongoDB/embedded_movies
-# dataset = load_dataset("MongoDB/embedded_movies")
-# dataset_df = pd.DataFrame(dataset["train"])
+# https://huggingface.co/datasets/MongoDB/embedded_movies
+dataset = load_dataset("MongoDB/embedded_movies")
+dataset_df = pd.DataFrame(dataset["train"])
 
-# # data cleaning, preparation, and loading
-# dataset_df = dataset_df.dropna(subset=["plot"])
-# dataset_df = dataset_df.dropna(subset=["fullplot"])
+# data cleaning, preparation, and loading
+dataset_df = dataset_df.dropna(subset=["plot"])
+dataset_df = dataset_df.dropna(subset=["fullplot"])
 
-# print("\nNumber of missing values in each column after removal:")
-# print(dataset_df.isnull().sum())
-# dataset_df = dataset_df.drop(columns=["plot_embedding"])
+print("\nNumber of missing values in each column after removal:")
+print(dataset_df.isnull().sum())
+dataset_df = dataset_df.drop(columns=["plot_embedding"])
 
-# embed_model = OpenAIEmbedding(model="text-embedding-3-small", dimensions=256)
+embed_model = OpenAIEmbedding(model="text-embedding-3-small", dimensions=256)
 
-# llm = OpenAI()
+llm = OpenAI()
 
-# Settings.llm = llm
+Settings.llm = llm
 
-# Settings.embed_model = embed_model
+Settings.embed_model = embed_model
 
-# # Convert the DataFrame to a JSON string representation
-# documents_json = dataset_df.to_json(orient="records")
-# # Load the JSON string into a Python list of dictionaries
-# documents_list = json.loads(documents_json)
+# Convert the DataFrame to a JSON string representation
+documents_json = dataset_df.to_json(orient="records")
+# Load the JSON string into a Python list of dictionaries
+documents_list = json.loads(documents_json)
 
-# print("Number of documents: ", len(documents_list))
-
-
-# llama_documents = []
-
-# for i in range(50):
-
-#     document = documents_list[i]
-
-#     # Value for metadata must be one of (str, int, float, None)
-#     document["writers"] = json.dumps(document["writers"])
-#     document["languages"] = json.dumps(document["languages"])
-#     document["genres"] = json.dumps(document["genres"])
-#     document["cast"] = json.dumps(document["cast"])
-#     document["directors"] = json.dumps(document["directors"])
-#     document["countries"] = json.dumps(document["countries"])
-#     document["imdb"] = json.dumps(document["imdb"])
-#     document["awards"] = json.dumps(document["awards"])
-
-#     #   Create a Document object with the text and excluded metadata for llm and embedding models
-#     llama_document = Document(
-#         text=document["fullplot"],
-#         metadata=document,
-#         excluded_llm_metadata_keys=["fullplot", "metacritic"],
-#         excluded_embed_metadata_keys=[
-#             "fullplot",
-#             "metacritic",
-#             "poster",
-#             "num_mflix_comments",
-#             "runtime",
-#             "rated",
-#         ],
-#         metadata_template="{key}=>{value}",
-#         text_template="Metadata: {metadata_str}\n-----\nContent: {content}",
-#     )
-
-#     llama_documents.append(llama_document)
-
-# # Observing an example of what the LLM and Embedding model receive as input
-# print(
-#     "\nThe LLM sees this: \n",
-#     llama_documents[0].get_content(metadata_mode=MetadataMode.LLM),
-# )
-# print(
-#     "\nThe Embedding model sees this: \n",
-#     llama_documents[0].get_content(metadata_mode=MetadataMode.EMBED),
-# )
+print("Number of documents: ", len(documents_list))
 
 
-# parser = SentenceSplitter()
-# nodes = parser.get_nodes_from_documents(llama_documents)
-# print("Nodes count: ", len(nodes))
+llama_documents = []
 
-# i = 0
+for i in range(100):
+
+    document = documents_list[i]
+
+    # Value for metadata must be one of (str, int, float, None)
+    document["writers"] = json.dumps(document["writers"])
+    document["languages"] = json.dumps(document["languages"])
+    document["genres"] = json.dumps(document["genres"])
+    document["cast"] = json.dumps(document["cast"])
+    document["directors"] = json.dumps(document["directors"])
+    document["countries"] = json.dumps(document["countries"])
+    document["imdb"] = json.dumps(document["imdb"])
+    document["awards"] = json.dumps(document["awards"])
+
+    #   Create a Document object with the text and excluded metadata for llm and embedding models
+    llama_document = Document(
+        text=document["fullplot"],
+        metadata=document,
+        excluded_llm_metadata_keys=["fullplot", "metacritic"],
+        excluded_embed_metadata_keys=[
+            "fullplot",
+            "metacritic",
+            "poster",
+            "num_mflix_comments",
+            "runtime",
+            "rated",
+        ],
+        metadata_template="{key}=>{value}",
+        text_template="Metadata: {metadata_str}\n-----\nContent: {content}",
+    )
+
+    llama_documents.append(llama_document)
+
+# Observing an example of what the LLM and Embedding model receive as input
+print(
+    "\nThe LLM sees this: \n",
+    llama_documents[0].get_content(metadata_mode=MetadataMode.LLM),
+)
+print(
+    "\nThe Embedding model sees this: \n",
+    llama_documents[0].get_content(metadata_mode=MetadataMode.EMBED),
+)
+
+
+parser = SentenceSplitter()
+nodes = parser.get_nodes_from_documents(llama_documents)
+print("Nodes count: ", len(nodes))
+
+i = 0
 # for node in nodes:
 
 #     print(i)
