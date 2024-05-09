@@ -22,6 +22,8 @@ This took was created to help businesses manage their customer support tickets m
 
 - **OpenAI**: OpenAI's natural language processing capabilities are leveraged to automate ticket categorization, sentiment analysis, and response generation.
 
+## LlamaIndexing and MongoDB
+To undestand about data retrieval ,cleaning ,making embeddings and uploading all of the data on MongoDB take a look at [llamaindex_&_mongodb.ipynb](https://github.com/bilal77511/llamaindex/blob/bdac5fc339a5bd5fd9d8ede8bf73df3dd73da71d/llamaindex_%26_mongodb.ipynb)
 ## Installation
 
 TBD
