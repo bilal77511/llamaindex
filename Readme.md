@@ -24,6 +24,10 @@ This took was created to help businesses manage their customer support tickets m
 
 ## LlamaIndexing and MongoDB
 To undestand about data retrieval ,cleaning ,making embeddings and uploading all of the data on MongoDB take a look at [llamaindex_&_mongodb.ipynb](https://github.com/bilal77511/llamaindex/blob/bdac5fc339a5bd5fd9d8ede8bf73df3dd73da71d/llamaindex_%26_mongodb.ipynb)
+
+## Other Repos For hackathon
+[Frontend and Trulens Evaluation](https://github.com/Jaswir/ticket-ai-streamlit)
+[Backend](https://github.com/Jaswir/ticket-ai-backend)
 ## Installation
 
 TBD
