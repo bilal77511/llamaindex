@@ -27,7 +27,8 @@ To undestand about data retrieval ,cleaning ,making embeddings and uploading all
 
 ## Other Repos For hackathon
 [Frontend and Trulens Evaluation](https://github.com/Jaswir/ticket-ai-streamlit)
-[Backend](https://github.com/Jaswir/ticket-ai-backend)
+
+[Backend is in Django](https://github.com/Jaswir/ticket-ai-backend)
 ## Installation
 
 TBD
